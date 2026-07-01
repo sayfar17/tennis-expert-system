@@ -1,0 +1,15 @@
+Cielo 	Temperatura	Humedad	Viento	Jugar
+Soleado	Caluroso	Alta	flojo	No
+Soleado	Caluroso	Alta	fuerte	No
+Cubierto	Caluroso	Alta	flojo	Si
+Lluvioso	Suave	Alta	flojo	Si
+Lluvioso	Fresco	Normal	flojo	Si
+Lluvioso	Fresco	Normal	fuerte	No
+Cubierto	Fresco	Normal	fuerte	Si
+Soleado	Suave	Alta	flojo	No
+Soleado	Fresco	Normal	flojo	Si
+Lluvioso	Suave	Normal	flojo	Si
+Soleado	Suave	Normal	fuerte	Si
+Cubierto	Suave	Alta	fuerte	Si
+Cubierto	Caluroso	Normal	flojo	Si
+Lluvioso	Suave	Alta	fuerte	No

@@ -2,25 +2,19 @@
 Módulo: app.py
 Punto de entrada del Sistema Experto 
 """
+from knowledge_acquisition.dataset_loader import DatasetLoader
+
 from controllers.expert_controller import ExpertController
+from knowledge_acquisition.chaid import CHAID
+from knowledge_acquisition.rule_generator import RuleGenerator
+from tkinter import Tk
+from tkinter.filedialog import askopenfilename
+
+dataset_loader = DatasetLoader()
+chaid = CHAID()
+rule_generator = RuleGenerator()
 
 def solicitar_dato(mensaje, opciones):
-    """
-    Solicita un dato al usuario y valida que pertenezca
-    a las opciones permitidas.
-
-    Args:
-        mensaje (str):
-            Mensaje mostrado al usuario.
-
-        opciones (list):
-            Lista de opciones válidas.
-
-    Returns:
-        str:
-            Valor ingresado por el usuario.
-    """
-
     while True:
 
         print(f"\nOpciones disponibles: {', '.join(opciones)}")
@@ -37,6 +31,83 @@ def main():
     """
     Función principal del programa.
     """
+    print("=" * 60)
+    print("      SISTEMA EXPERTO PARA ENCUENTROS DE TENIS")
+    print("=" * 60)
+
+    print("\nCARGA DEL CONJUNTO DE DATOS")
+    print("-" * 60)
+
+    # Ocultar la ventana principal de Tkinter
+    root = Tk()
+    root.withdraw()
+
+    ruta_dataset = askopenfilename(
+        title="Seleccione el archivo del conjunto de datos",
+        filetypes=[
+            ("Archivos de texto", "*.txt"),
+            ("Archivos CSV", "*.csv"),
+            ("Todos los archivos", "*.*")
+        ]
+    )
+
+    # Si el usuario cancela la selección
+    if not ruta_dataset:
+        print("\nNo se seleccionó ningún archivo.")
+        return
+
+    try:
+
+        dataset = dataset_loader.load_dataset(ruta_dataset)
+
+        print("\n✓ Dataset cargado correctamente.")
+        print("\nProcesando conjunto de datos...")
+
+        try:
+
+            chaid.fit(dataset)
+            knowledge_information = chaid.get_knowledge_information()
+
+            rule_generator.load_knowledge_information(
+                knowledge_information
+            )
+
+            print("✓ Algoritmo ejecutado correctamente.")
+
+        except Exception as error:
+
+            print("\n✗ Error durante la ejecución del algoritmo.")
+
+            print(error)
+
+            return
+        
+        print("\nGenerando reglas mediante CHAID...")
+
+        try:
+
+            rule_generator.generate_rules()
+
+            print("✓ Reglas generadas correctamente.\n")
+
+            rule_generator.show_generated_rules()
+            
+            input("\nPresione ENTER para iniciar el Sistema Experto...")
+
+        except Exception as error:
+
+            print("\n✗ Error al generar las reglas.")
+
+            print(error)
+
+            return
+            
+    except Exception as error:
+
+        print("\n✗ Error al cargar el dataset.")
+        print(error)
+
+        return
 
     controller = ExpertController()
 
