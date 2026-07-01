@@ -10,6 +10,7 @@ from knowledge_acquisition.rule_generator import RuleGenerator
 from tkinter import Tk
 from tkinter.filedialog import askopenfilename
 
+# Modo CLI: terminal
 dataset_loader = DatasetLoader()
 chaid = CHAID()
 rule_generator = RuleGenerator()
@@ -160,5 +161,17 @@ def main():
             break
 
 
+
+# Modo Visual (UI)
+
+from ui.main_window import MainWindow
+
+def main1():
+    app = MainWindow()
+    app.run()
+
+
+
+
 if __name__ == "__main__":
-    main()
+    main1()
